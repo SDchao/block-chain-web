@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import Login from "@/views/Login.vue"
 import Manage from "@/views/Manage.vue"
 
+import TestPannel from "@/views/content/TestPannel.vue"
+import TestPannelSecond from "../views/content/TestPannelSecond.vue"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,7 +23,19 @@ const routes = [
   {
     path: '/manage',
     name: 'Manage',
-    component: Manage
+    component: Manage,
+    children: [
+      {
+        path: 'test',
+        name: 'TestPannel',
+        component: TestPannel
+      },
+      {
+        path: 'test2',
+        name: 'TestPannelSecond',
+        component: TestPannelSecond
+      }
+    ]
   }
 ]
 
