@@ -3,8 +3,9 @@ import VueRouter from 'vue-router'
 import Login from "@/views/Login.vue"
 import Manage from "@/views/Manage.vue"
 
-import TestPannel from "@/views/content/TestPannel.vue"
-import TestPannelSecond from "../views/content/TestPannelSecond.vue"
+import TestPanel from "@/views/content/TestPanel.vue"
+import TestPanelSecond from "../views/content/TestPanelSecond.vue"
+import UserInfo from "@/views/content/UserInfo";
 
 Vue.use(VueRouter)
 
@@ -27,13 +28,18 @@ const routes = [
         children: [
             {
                 path: 'test',
-                name: 'TestPannel',
-                component: TestPannel
+                name: 'TestPanel',
+                component: TestPanel
             },
             {
                 path: 'test2',
-                name: 'TestPannelSecond',
-                component: TestPannelSecond
+                name: 'TestPanelSecond',
+                component: TestPanelSecond
+            },
+            {
+                path: 'userinfo',
+                name: 'UserInfo',
+                component: UserInfo
             }
         ]
     }

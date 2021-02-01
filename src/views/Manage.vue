@@ -11,11 +11,11 @@
                         <el-submenu index="0">
                             <template slot="title">
                                 <i class="el-icon-menu"></i>
-                                <span>测试0</span>
+                                <span>用户管理</span>
                             </template>
                             <el-menu-item-group>
-                                <el-menu-item index="/manage/test">0-0</el-menu-item>
-                                <el-menu-item index="/manage/test2">0-1</el-menu-item>
+                                <el-menu-item index="/manage/userinfo">个人资料</el-menu-item>
+                                <el-menu-item index="/manage/test2">测试2</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
 
@@ -60,6 +60,8 @@
     position: absolute;
     left: 20rem;
     top: 60px;
+    right: 0;
+    bottom: 0;
 }
 
 h1 {
