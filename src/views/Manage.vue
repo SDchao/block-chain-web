@@ -7,26 +7,25 @@
             <el-container>
                 <el-aside width="20rem">
                     <el-card>管理事项</el-card>
-                    <el-menu default-active="/manage/test" router @select="handleSelect" :collapse="isCollapse">
+                    <el-menu default-active="/manage/userinfo" router @select="handleSelect" :collapse="isCollapse">
                         <el-submenu index="0">
                             <template slot="title">
-                                <i class="el-icon-menu"></i>
-                                <span>用户管理</span>
+                                <i class="el-icon-document"></i>
+                                <span>证书管理</span>
                             </template>
                             <el-menu-item-group>
-                                <el-menu-item index="/manage/userinfo">个人资料</el-menu-item>
-                                <el-menu-item index="/manage/test2">测试2</el-menu-item>
+                                <el-menu-item index="/manage/certupload">证书上传</el-menu-item>
+                                <el-menu-item index="/manage/certupdate" disabled>证书更新</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
 
                         <el-submenu index="1">
                             <template slot="title">
                                 <i class="el-icon-user"></i>
-                                <span>测试1</span>
+                                <span>用户管理</span>
                             </template>
                             <el-menu-item-group>
-                                <el-menu-item index="1-0" disabled>1-0</el-menu-item>
-                                <el-menu-item index="1-1" disabled>1-1</el-menu-item>
+                                <el-menu-item index="/manage/userinfo">个人资料</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
                     </el-menu>
@@ -68,6 +67,18 @@ h1 {
     text-align: left;
     background: black;
     color: white;
+}
+</style>
+
+<style>
+/*for route*/
+.el-form {
+    margin: 1rem;
+    width: 50rem;
+}
+
+.input-section {
+    margin: 2rem;
 }
 </style>
 

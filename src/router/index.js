@@ -6,6 +6,7 @@ import Manage from "@/views/Manage.vue"
 import TestPanel from "@/views/content/TestPanel.vue"
 import TestPanelSecond from "../views/content/TestPanelSecond.vue"
 import UserInfo from "@/views/content/UserInfo";
+import CertUpload from "@/views/content/CertUpload";
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,11 @@ const routes = [
                 path: 'userinfo',
                 name: 'UserInfo',
                 component: UserInfo
+            },
+            {
+                path: 'certupload',
+                name: 'CertUpload',
+                component: CertUpload
             }
         ]
     }

@@ -18,10 +18,9 @@
                 <el-button
                         type="primary"
                         icon="el-icon-user-solid"
-                        @click="onLoginClicked"
-                >登录
-                </el-button
-                >
+                        @click="onLoginClicked">
+                    登录
+                </el-button>
                 <el-button icon="el-icon-s-check">注册</el-button>
             </div>
         </el-container>

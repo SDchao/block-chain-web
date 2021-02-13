@@ -93,15 +93,6 @@ export default {
 
 <style scoped>
 
-.el-form {
-    margin: 1rem;
-    width: 50rem;
-}
-
-.input-section {
-    margin: 2rem;
-}
-
 .middle-width {
     width: 15rem;
 }
