@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from "@/views/Login.vue"
 import Manage from "@/views/Manage.vue"
+import Register from "@/views/Register";
 
 import TestPanel from "@/views/content/TestPanel.vue"
 import TestPanelSecond from "../views/content/TestPanelSecond.vue"
@@ -21,6 +22,11 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: Login
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register
     },
     {
         path: '/manage',

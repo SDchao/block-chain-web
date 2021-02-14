@@ -5,7 +5,7 @@
                 <h1>区块链学历资质管理系统</h1>
             </el-header>
             <el-container>
-                <el-aside width="20rem">
+                <el-aside width="15rem">
                     <el-card>管理事项</el-card>
                     <el-menu default-active="/manage/userinfo" router @select="handleSelect" :collapse="isCollapse">
                         <el-submenu index="0">
@@ -57,7 +57,7 @@
 
 .el-main {
     position: absolute;
-    left: 20rem;
+    left: 15rem;
     top: 60px;
     right: 0;
     bottom: 0;
@@ -67,6 +67,8 @@ h1 {
     text-align: left;
     background: black;
     color: white;
+    margin: 0;
+    height: 60px;
 }
 </style>
 

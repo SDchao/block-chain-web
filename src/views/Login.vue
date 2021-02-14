@@ -21,7 +21,7 @@
                         @click="onLoginClicked">
                     登录
                 </el-button>
-                <el-button icon="el-icon-s-check">注册</el-button>
+                <el-button icon="el-icon-s-check" @click="onRegisterClicked">注册</el-button>
             </div>
         </el-container>
     </div>
@@ -42,7 +42,13 @@ export default {
             console.log("Submit " + this.username_input + " " + this.passwd_input);
             window.location.replace("/manage");
         },
+        onRegisterClicked() {
+            window.location.href = "/register"
+        }
     },
+    created() {
+        document.title = "用户登录"
+    }
 };
 </script>
 
