@@ -1,13 +1,13 @@
 <template>
     <div id="Register">
         <h1>欢迎加入区块链学历认证系统</h1>
-        <el-steps :active="step" align-center>
+        <el-steps :active="step" align-center finish-status="success">
             <el-step title="选择您的身份"></el-step>
             <el-step title="填写信息"></el-step>
             <el-step title="确认信息"></el-step>
         </el-steps>
 
-        <el-card class="content" v-if="step === 1">
+        <el-card class="content" v-if="step === 0" shadow="hover">
             <el-row type="flex" justify="center">
                 <el-form>
                     <el-form-item label="机构类型">
@@ -27,7 +27,7 @@
             </el-row>
         </el-card>
 
-        <el-card class="content" v-if="step === 2">
+        <el-card class="content" v-if="step === 1" shadow="hover">
             <!--SCHOOL FORM-->
             <el-form ref="schoolForm" :model="form" :rules="rules" v-if="form.instituteType === 0">
                 <el-form-item label="学校名称" prop="schoolName">
@@ -44,7 +44,13 @@
                 </el-form-item>
 
                 <el-form-item label="证明材料" prop="verify">
-                    TODO
+                    <el-upload
+                            drag
+                            action="https://jsonplaceholder.typicode.com/posts/"
+                            multiple>
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                    </el-upload>
                 </el-form-item>
 
                 <el-form-item>
@@ -73,7 +79,13 @@
                     <el-input v-model="form.applicantPosition"></el-input>
                 </el-form-item>
                 <el-form-item label="证明材料" prop="verify">
-                    TODO
+                    <el-upload
+                            drag
+                            action="https://jsonplaceholder.typicode.com/posts/"
+                            multiple>
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                    </el-upload>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="step--">上一步</el-button>
@@ -85,9 +97,46 @@
                     </el-button>
                 </el-form-item>
             </el-form>
+
+            <!-- STUDENT -->
+            <el-form ref="stuForm" :model="form" :rules="rules" v-if="form.instituteType === 2">
+                <el-form-item label="学生姓名" prop="stuName">
+                    <el-input v-model="form.stuName"></el-input>
+                </el-form-item>
+                <el-form-item label="所在学校" prop="stuSchoolName">
+                    <el-input v-model="form.stuSchoolName"></el-input>
+                </el-form-item>
+                <el-form-item label="专业" prop="stuMajor">
+                    <el-input v-model="form.stuMajor"></el-input>
+                </el-form-item>
+                <el-form-item label="学号" prop="stuNo">
+                    <el-input v-model="form.stuNo"></el-input>
+                </el-form-item>
+                <el-form-item label="入学时间" prop="stuEnterDate">
+                    <el-date-picker type="month" v-model="form.stuEnterDate"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="证明材料" prop="verify">
+                    <el-upload
+                            drag
+                            action="https://jsonplaceholder.typicode.com/posts/"
+                            multiple>
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="step--">上一步</el-button>
+                    <el-button
+                            type="primary"
+                            @click="submitStu"
+                            ref="schoolNextButton">
+                        下一步
+                    </el-button>
+                </el-form-item>
+            </el-form>
         </el-card>
 
-        <el-card class="content" v-if="step === 3">
+        <el-card class="content" v-if="step === 2" shadow="hover">
             <h5>请确认您的信息</h5>
             <el-table :data="finalVerifyTableData" stripe>
                 <el-table-column
@@ -112,7 +161,7 @@ export default {
     name: "Register",
     data() {
         return {
-            step: 1,
+            step: 0,
             form: {
                 instituteType: "",
                 // SCHOOL
@@ -124,6 +173,13 @@ export default {
                 bizName: "",
                 bizAddr: "",
                 bizType: "",
+
+                // STUDENT
+                stuName: "",
+                stuSchoolName: "",
+                stuMajor: "",
+                stuNo: "",
+                stuEnterDate: null,
 
                 // GENERAL
                 applicant: "",
@@ -139,6 +195,9 @@ export default {
                 // BUSINESS
                 bizName: {required: true, message: "请输入企业名称", trigger: "blur"},
                 bizAddr: {required: true, message: "请输入企业地址", trigger: "blur"},
+                // STUDENT
+                stuName: {required: true, message: "请输入学生姓名", trigger: "blur"},
+                stuSchoolName: {required: true, message: "请输入所在学校", trigger: "blur"},
 
                 // GENERAL
                 applicant: {required: true, message: "请输入申请人", trigger: "blur"}
@@ -160,7 +219,6 @@ export default {
                         this.finalVerifyTableData.push({name: "申请人职务", value: this.form.applicantPosition});
                     this.step++;
                 } else {
-                    console.log("ERROR SUBMIT")
                     return false;
                 }
             })
@@ -178,13 +236,43 @@ export default {
                         this.finalVerifyTableData.push({name: "申请人职务", value: this.form.applicantPosition});
                     this.step++;
                 } else {
-                    console.log("ERROR SUBMIT")
+                    return false;
+                }
+            })
+        },
+        submitStu() {
+            this.$refs["stuForm"].validate((valid) => {
+                if (valid) {
+                    this.finalVerifyTableData = [
+                        {name: "机构类型", value: "学生"},
+                        {name: "学生姓名", value: this.form.stuName},
+                        {name: "所在学校", value: this.form.stuSchoolName}
+                    ]
+
+                    if (this.form.stuMajor)
+                        this.finalVerifyTableData.push({name: "专业", value: this.form.stuMajor})
+                    if (this.form.stuNo)
+                        this.finalVerifyTableData.push({name: "学号", value: this.form.stuNo})
+                    if (this.form.stuEnterDate)
+                        this.finalVerifyTableData.push({
+                            name: "入学时间",
+                            value: this.formatEnterDate(this.form.stuEnterDate)
+                        })
+
+                    this.step++;
+                } else {
+                    console.warn("ERROR")
                     return false;
                 }
             })
         },
         finalSubmit() {
-
+            this.step++;
+        },
+        formatEnterDate(date) {
+            let year = date.getFullYear()
+            let month = date.getMonth() + 1
+            return year.toString() + "-" + month.toString()
         }
     },
     created() {
@@ -207,7 +295,7 @@ h1 {
     width: 30rem;
     min-height: 10rem;
     text-align: center;
-    margin: 20vh auto;
+    margin: 10vh auto;
 }
 
 .el-form {
