@@ -2,29 +2,36 @@
     <div id="Register">
         <h1>欢迎加入区块链学历认证系统</h1>
         <el-steps :active="step" align-center finish-status="success">
-            <el-step title="选择您的身份"></el-step>
-            <el-step title="填写信息"></el-step>
+            <el-step title="账户信息"></el-step>
+            <el-step title="身份信息"></el-step>
             <el-step title="确认信息"></el-step>
         </el-steps>
 
         <el-card class="content" v-if="step === 0" shadow="hover">
-            <el-row type="flex" justify="center">
-                <el-form>
-                    <el-form-item label="机构类型">
-                        <el-select v-model="form.instituteType" placeholder="请选择机构类型">
-                            <el-option
-                                    v-for="item in instituteTypeOptions"
-                                    :key="item.value"
-                                    :value="item.value"
-                                    :label="item.label">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button @click="step++" type="primary" :disabled="form.instituteType === ''">下一步</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-row>
+            <el-form ref="accountForm" :model="form" :rules="rules">
+                <el-form-item label="注册邮箱" prop="email">
+                    <el-input v-model="form.email"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="passwd">
+                    <el-input v-model="form.passwd" show-password></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="checkPasswd">
+                    <el-input v-model="form.checkPasswd" show-password></el-input>
+                </el-form-item>
+                <el-form-item label="机构类型" prop="instituteType">
+                    <el-select v-model="form.instituteType" placeholder="请选择机构类型">
+                        <el-option
+                                v-for="item in instituteTypeOptions"
+                                :key="item.value"
+                                :value="item.value"
+                                :label="item.label">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="submitAccount" type="primary">下一步</el-button>
+                </el-form-item>
+            </el-form>
         </el-card>
 
         <el-card class="content" v-if="step === 1" shadow="hover">
@@ -153,6 +160,10 @@
             <el-button class="final-button" @click="step--">上一步</el-button>
             <el-button class="final-button" type="primary" @click="finalSubmit">提交</el-button>
         </el-card>
+        <el-card class="content" v-if="step === 3" shadow="hover">
+            <h3>提交成功</h3>
+            您的信息将会被审核，结果将通过邮件通知
+        </el-card>
     </div>
 </template>
 
@@ -163,6 +174,9 @@ export default {
         return {
             step: 0,
             form: {
+                email: "",
+                passwd: "",
+                checkPasswd: "",
                 instituteType: "",
                 // SCHOOL
                 schoolName: "",
@@ -189,6 +203,39 @@ export default {
                 {label: "学校", value: 0}, {label: "企业", value: 1}, {label: "学生", value: 2}
             ],
             rules: {
+                email: [
+                    {required: true, message: "请输入邮箱", trigger: "blur"},
+                    {type: "email", message: "邮箱格式不正确", trigger: "blur"}
+                ],
+                passwd: [
+                    {required: true, message: "请输入密码", trigger: "blur"},
+                    {
+                        trigger: "blur", validator: (rule, value, callback) => {
+                            if (value.length < 7)
+                                return callback(new Error("密码长度不足7位"))
+                            else if (value.length > 128)
+                                return callback(new Error("密码长度多于128位"))
+                            else {
+                                let hasNum = /[0-9]/.test(value);
+                                let hasAlpha = /[a-zA-Z]/.test(value);
+                                if (!(hasNum && hasAlpha))
+                                    return callback(new Error("密码必须包括字母和数字"))
+                            }
+                            callback();
+                        }
+                    }
+                ],
+                checkPasswd: [
+                    {required: true, message: "请确认密码", trigger: "blur"},
+                    {
+                        trigger: "blur", validator: (rule, value, callback) => {
+                            if (value !== this.form.passwd)
+                                return callback(new Error("两次密码输入不一致"))
+                            callback();
+                        }
+                    }
+                ],
+                instituteType: {required: true, message: "请选择机构类型", trigger: "select"},
                 // SCHOOL
                 schoolName: {required: true, message: "请输入学校名称", trigger: "blur"},
                 schoolAddr: {required: true, message: "请输入学校地址", trigger: "blur"},
@@ -206,6 +253,15 @@ export default {
         }
     },
     methods: {
+        submitAccount() {
+            this.$refs["accountForm"].validate((valid) => {
+                if (valid) {
+                    this.step++;
+                } else {
+                    return false;
+                }
+            })
+        },
         submitSchool() {
             this.$refs["schoolForm"].validate((valid) => {
                 if (valid) {
