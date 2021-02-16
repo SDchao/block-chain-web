@@ -55,7 +55,7 @@ export default {
 <style scoped>
 #login {
     text-align: center;
-    margin: 8px 0;
+    margin: 0;
 }
 
 .input {
