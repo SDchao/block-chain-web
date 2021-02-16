@@ -13,7 +13,11 @@
                     <el-input v-model="form.email"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="passwd">
-                    <el-input v-model="form.passwd" show-password></el-input>
+                    <el-tooltip placement="right">
+                        <div slot="content">密码至少8位<br/>且包含字母和数字</div>
+                        <el-input v-model="form.passwd" show-password></el-input>
+                    </el-tooltip>
+
                 </el-form-item>
                 <el-form-item label="确认密码" prop="checkPasswd">
                     <el-input v-model="form.checkPasswd" show-password></el-input>
@@ -197,7 +201,7 @@ export default {
 
                 // GENERAL
                 applicant: "",
-                verifyImg: ""
+                verifyFileList: []
             },
             instituteTypeOptions: [
                 {label: "学校", value: 0}, {label: "企业", value: 1}, {label: "学生", value: 2}
@@ -258,6 +262,7 @@ export default {
                 if (valid) {
                     this.step++;
                 } else {
+                    this.$message.error("信息填写错误")
                     return false;
                 }
             })
@@ -275,6 +280,7 @@ export default {
                         this.finalVerifyTableData.push({name: "申请人职务", value: this.form.applicantPosition});
                     this.step++;
                 } else {
+                    this.$message.error("信息填写错误")
                     return false;
                 }
             })
@@ -292,6 +298,7 @@ export default {
                         this.finalVerifyTableData.push({name: "申请人职务", value: this.form.applicantPosition});
                     this.step++;
                 } else {
+                    this.$message.error("信息填写错误")
                     return false;
                 }
             })
@@ -317,7 +324,7 @@ export default {
 
                     this.step++;
                 } else {
-                    console.warn("ERROR")
+                    this.$message.error("信息填写错误")
                     return false;
                 }
             })
