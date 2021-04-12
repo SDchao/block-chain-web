@@ -2,13 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from "@/views/Login.vue"
 import Manage from "@/views/Manage.vue"
-import Register from "@/views/Register";
 
-import TestPanel from "@/views/content/TestPanel.vue"
-import TestPanelSecond from "../views/content/TestPanelSecond.vue"
-import UserInfo from "@/views/content/UserInfo";
 import CertUpload from "@/views/content/CertUpload";
 import CertQuery from "@/views/content/CertQuery";
+import Verify from "@/views/Verify";
+import CertModify from "@/views/content/CertModify";
 
 Vue.use(VueRouter)
 
@@ -24,31 +22,21 @@ const routes = [
         name: 'Login',
         component: Login
     },
+    // {
+    //     path: '/register',
+    //     name: 'Register',
+    //     component: Register
+    // },
     {
-        path: '/register',
-        name: 'Register',
-        component: Register
+        path: '/verify',
+        name: "Verify",
+        component: Verify
     },
     {
         path: '/manage',
         name: 'Manage',
         component: Manage,
         children: [
-            {
-                path: 'test',
-                name: 'TestPanel',
-                component: TestPanel
-            },
-            {
-                path: 'test2',
-                name: 'TestPanelSecond',
-                component: TestPanelSecond
-            },
-            {
-                path: 'userinfo',
-                name: 'UserInfo',
-                component: UserInfo
-            },
             {
                 path: 'cert_upload',
                 name: 'CertUpload',
@@ -58,6 +46,11 @@ const routes = [
                 path: "cert_query",
                 name: "CertQuery",
                 component: CertQuery
+            },
+            {
+                path: "cert_modify",
+                name: "CertModify",
+                component: CertModify
             }
         ]
     }

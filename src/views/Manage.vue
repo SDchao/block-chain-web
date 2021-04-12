@@ -16,7 +16,7 @@
               <el-menu-item-group>
                 <el-menu-item index="/manage/cert_query">证书查询</el-menu-item>
                 <el-menu-item index="/manage/cert_upload">证书上传</el-menu-item>
-                <el-menu-item index="/manage/cert_update" disabled>证书更新</el-menu-item>
+                <el-menu-item index="/manage/cert_modify">证书修改</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
@@ -26,7 +26,7 @@
                 <span>用户管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/manage/userinfo">个人资料</el-menu-item>
+                  <el-menu-item index="/manage/userinfo" disabled>个人资料</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
@@ -66,6 +66,7 @@
 
 h1 {
     text-align: left;
+    line-height: 60px;
     background: black;
     color: white;
     margin: 0;

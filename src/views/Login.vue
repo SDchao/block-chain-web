@@ -1,49 +1,99 @@
 <template>
-  <div id="login">
-    <el-container direction="vertical">
-      <h1>系统登录</h1>
-      <el-input
-          class="input"
-          v-model="username_input"
-          placeholder="用户名"
-      ></el-input>
-      <el-input
-          class="input"
-          v-model="passwd_input"
-          placeholder="密码"
-          show-password
-      ></el-input>
-      <el-checkbox v-model="remember_checkbox" label="记住密码"></el-checkbox>
-      <div class="button_group">
-        <el-button
-            type="primary"
-            icon="el-icon-user-solid"
-            @click="onLoginClicked">
-          登录
-        </el-button>
-        <el-button icon="el-icon-s-check" @click="onRegisterClicked">注册</el-button>
-      </div>
-    </el-container>
-  </div>
+    <div id="login">
+        <el-container direction="vertical">
+            <h1>系统登录</h1>
+            <el-form
+              ref="loginForm"
+              style="text-align: center; margin: 0 auto; max-width: 400px;"
+              :model="loginFormData"
+              :rules="loginFormRule">
+                <el-form-item
+                  prop="stu_id"
+                  label="身份证号">
+                    <el-input v-model="loginFormData.stu_id"></el-input>
+                </el-form-item>
+
+                <el-form-item
+                  prop="pri_key_sum"
+                  label="私钥文件">
+                    <el-tooltip placement="right" content="仅上传校验，不会泄露密钥信息">
+                        <el-button v-if="!loginFormData.pri_key_sum" icon="el-icon-upload" @click="onPrettyUploadClick"
+                                   size="small">点击上传
+                        </el-button>
+                        <el-button v-if="loginFormData.pri_key_sum" icon="el-icon-check" @click="onPrettyUploadClick"
+                                   size="small">点击上传
+                        </el-button>
+                    </el-tooltip>
+                </el-form-item>
+
+            </el-form>
+
+            <input id="file-input" type="file" style="display: none;" @change="onUploadFile">
+
+            <div class="button_group">
+                <el-button
+                  type="primary"
+                  icon="el-icon-user-solid"
+                  @click="onLoginClicked">
+                    登录
+                </el-button>
+                <el-button icon="el-icon-s-check" @click="onRegisterClicked">免登录验证证书</el-button>
+            </div>
+        </el-container>
+    </div>
 </template>
 
 <script>
+
+import FormRuleGenerator from "@/assets/FormRuleGenerator";
+import {hex_md5} from "@/assets/MD5";
+
+const rawLoginForm = {
+    stu_id: "",
+    pri_key_sum: ""
+}
+
 export default {
     name: "Login",
     data() {
         return {
-            username_input: "",
-            passwd_input: "",
-            remember_checkbox: false,
+            loginFormData: rawLoginForm,
+            loginFormRule: FormRuleGenerator.getRequiredRule(Object.keys(rawLoginForm))
         };
     },
     methods: {
+        onPrettyUploadClick() {
+            document.getElementById("file-input").click()
+        },
+        onUploadFile(event) {
+            let reader = new FileReader()
+            reader.onload = (e) => {
+                let data = e.target.result
+                if (data.search(/^-----BEGIN RSA PRIVATE KEY/) === -1) {
+                    this.$message.error("所选文件不为私钥文件")
+                    this.loginFormData.pri_key_sum = ""
+                    return
+                }
+                this.loginFormData.pri_key_sum = hex_md5(data)
+            }
+            reader.readAsText(event.target.files[0])
+        },
         onLoginClicked() {
-            console.log("Submit " + this.username_input + " " + this.passwd_input);
-            window.location.replace("/manage");
+            this.$refs.loginForm.validate((valid) => {
+                if (valid) {
+                    this.$axios.post('/login', rawLoginForm)
+                        .then((res) => {
+                            if (res.data.msg === "SUCCESS") {
+                                window.location.href = "/manage/cert_query"
+                            } else {
+                                this.$message.error(res.data.msg)
+                            }
+                        })
+                }
+            })
         },
         onRegisterClicked() {
-            window.location.href = "/register"
+            window.location.href = "/verify"
         }
     },
     created() {
@@ -53,18 +103,19 @@ export default {
 </script>
 
 <style scoped>
+
+h1 {
+    text-align: center;
+    line-height: 5rem;
+    background: black;
+    color: white;
+    margin: 0 0 3rem 0;
+    height: 5rem;
+}
+
 #login {
     text-align: center;
     margin: 0;
-}
-
-.input {
-    max-width: 300px;
-    margin: 5px auto;
-}
-
-.el-checkbox {
-    margin: 5px;
 }
 
 .el-button {

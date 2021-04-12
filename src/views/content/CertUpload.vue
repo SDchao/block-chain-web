@@ -1,46 +1,60 @@
 <template>
-  <div id="cert-upload">
-    <el-form
-        ref="certUpload"
-        :model="certFormData"
-        :rules="certFormRule">
+    <div id="cert-upload">
+        <el-form
+          ref="certUpload"
+          :model="certFormData"
+          :rules="certFormRule">
 
-      <el-form-item label="学生姓名" prop="stuName" required>
-        <el-input v-model="certFormData.stuName"></el-input>
-      </el-form-item>
+            <el-form-item label="证书编号" prop="cert_id" required>
+                <el-input v-model="certFormData.cert_id"></el-input>
+            </el-form-item>
 
-      <el-form-item label="所在学校" prop="stuInstitute" required>
-        <el-input v-model="certFormData.stuInstitute"></el-input>
-      </el-form-item>
+            <el-form-item label="学生姓名" prop="stu_name" required>
+                <el-input v-model="certFormData.stu_name"></el-input>
+            </el-form-item>
 
-      <el-form-item label="备注" prop="note">
-        <el-input v-model="certFormData.note"
-                  type="textarea" maxlength="100" show-word-limit
-                  :autosize="{ minRows: 5, maxRows: 10}"></el-input>
-      </el-form-item>
+            <el-form-item label="所在学校" prop="school_name" required>
+                <el-input v-model="certFormData.school_name"></el-input>
+            </el-form-item>
 
-      <el-form-item>
-        <el-button ref="submitButton" type="primary" @click="trySubmitForm">上传证书</el-button>
-      </el-form-item>
+            <el-form-item label="学位" prop="degree" required>
+                <el-input v-model="certFormData.degree"></el-input>
+            </el-form-item>
 
-    </el-form>
-  </div>
+            <el-form-item label="学制" prop="edu_system" required>
+                <el-input v-model="certFormData.edu_system"></el-input>
+            </el-form-item>
+
+            <el-form-item label="学生专业" prop="stu_major" required>
+                <el-input v-model="certFormData.stu_major"></el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button ref="submitButton" type="primary" @click="trySubmitForm">上传证书</el-button>
+            </el-form-item>
+
+        </el-form>
+    </div>
 </template>
 
 <script>
+import FormRuleGenerator from "@/assets/FormRuleGenerator";
+
+const rawForm = {
+    cert_id: "",
+    stu_name: "",
+    school_name: "",
+    degree: "",
+    edu_system: "",
+    stu_major: ""
+}
+
 export default {
     name: "CertUpload",
     data() {
         return {
-            certFormData: {
-                stuName: "",
-                stuInstitute: "",
-                note: ""
-            },
-            certFormRule: {
-                stuName: {required: true, message: "请输入学生姓名"},
-                stuInstitute: {required: true, message: "请输入学生所在学校"}
-            }
+            certFormData: rawForm,
+            certFormRule: FormRuleGenerator.getRequiredRule(Object.keys(rawForm))
         }
     },
     methods: {
@@ -51,14 +65,24 @@ export default {
                         lock: true,
                         text: "正在上传",
                     })
+                    let submitCertInfo = Object.assign({}, this.certFormData)
+                    delete submitCertInfo.stu_name
                     this.$axios.post("/issuecert", {
-                        pri_key: "",
-                        stu_name: this.certFormData.stuName,
-                        school_name: this.certFormData.stuInstitute
+                        stu_name: this.certFormData.stu_name,
+                        certs: [
+                            submitCertInfo
+                        ]
                     })
                         .then((response) => {
                             console.log(response)
                             loading.close()
+                            if (response.data.msg === "SUCCESS") {
+                                this.$message("上传成功")
+                                this.certFormData = rawForm
+                            } else {
+                                this.$message.error(response.data.msg)
+                            }
+
                         })
                         .catch((error) => {
                             console.log(error.message)
