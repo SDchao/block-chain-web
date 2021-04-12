@@ -16,7 +16,7 @@
                 <el-form-item
                   prop="pri_key_sum"
                   label="私钥文件">
-                    <el-tooltip placement="right" content="仅上传校验，不会泄露密钥信息">
+                    <el-tooltip placement="right" content="仅上传校验码，不会泄露密钥信息">
                         <el-button v-if="!loginFormData.pri_key_sum" icon="el-icon-upload" @click="onPrettyUploadClick"
                                    size="small">点击上传
                         </el-button>

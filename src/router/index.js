@@ -7,6 +7,7 @@ import CertUpload from "@/views/content/CertUpload";
 import CertQuery from "@/views/content/CertQuery";
 import Verify from "@/views/Verify";
 import CertModify from "@/views/content/CertModify";
+import Logout from "@/views/Logout";
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: Login
+    },
+    {
+        path: '/logout',
+        name: 'Logout',
+        component: Logout
     },
     // {
     //     path: '/register',

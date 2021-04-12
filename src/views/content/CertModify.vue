@@ -92,7 +92,7 @@ export default {
                         lock: true,
                         text: "正在查询"
                     })
-                    this.$axios.post("/querycert", {cert_id: this.queryCertId})
+                    this.$axios.post("/querycert", this.queryFormData)
                         .then((response) => {
                             loading.close()
                             if (response.data.msg === "SUCCESS") {
