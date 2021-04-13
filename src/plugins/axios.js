@@ -10,7 +10,7 @@ import axios from "axios";
 let config = {
     baseURL: "http://192.168.1.20:3000",
     timeout: 2 * 1000, // Timeout
-    withCredentials: false, // Check cross-site Access-Control
+    withCredentials: true, // Check cross-site Access-Control
 };
 
 const _axios = axios.create(config);

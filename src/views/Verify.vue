@@ -87,10 +87,6 @@ export default {
                         .catch((err) => {
                             loading.close()
                             this.$message.error("无法验证 " + err.message)
-
-                            // TEST
-                            this.resultTableData = KeyNameTool.certDataToTable({"cert_id": "12345"})
-                            // TEST
                         })
                 }
             })

@@ -69,11 +69,11 @@ export default {
             let reader = new FileReader()
             reader.onload = (e) => {
                 let data = e.target.result
-                if (data.search(/^-----BEGIN RSA PRIVATE KEY/) === -1) {
-                    this.$message.error("所选文件不为私钥文件")
-                    this.loginFormData.pri_key_sum = ""
-                    return
-                }
+                // if (data.search(/^-----BEGIN RSA PRIVATE KEY/) === -1) {
+                //     this.$message.error("所选文件不为私钥文件")
+                //     this.loginFormData.pri_key_sum = ""
+                //     return
+                // }
                 this.loginFormData.pri_key_sum = hex_md5(data)
             }
             reader.readAsText(event.target.files[0])
@@ -83,11 +83,15 @@ export default {
                 if (valid) {
                     this.$axios.post('/login', rawLoginForm)
                         .then((res) => {
+                            console.log(res)
                             if (res.data.msg === "SUCCESS") {
                                 window.location.href = "/manage/cert_query"
                             } else {
                                 this.$message.error(res.data.msg)
                             }
+                        })
+                        .catch((err) => {
+                            this.$message.error(err.message)
                         })
                 }
             })
