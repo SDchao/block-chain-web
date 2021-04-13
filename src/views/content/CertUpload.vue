@@ -9,6 +9,10 @@
                 <el-input v-model="certFormData.cert_id"></el-input>
             </el-form-item>
 
+            <el-form-item label="学生身份证" prop="stu_id" required>
+                <el-input v-model="certFormData.stu_id"></el-input>
+            </el-form-item>
+
             <el-form-item label="学生姓名" prop="stu_name" required>
                 <el-input v-model="certFormData.stu_name"></el-input>
             </el-form-item>
@@ -42,6 +46,7 @@ import FormRuleGenerator from "@/assets/FormRuleGenerator";
 
 const rawForm = {
     cert_id: "",
+    stu_id: "",
     stu_name: "",
     school_name: "",
     degree: "",
@@ -67,8 +72,10 @@ export default {
                     })
                     let submitCertInfo = Object.assign({}, this.certFormData)
                     delete submitCertInfo.stu_name
+                    delete submitCertInfo.stu_id
                     this.$axios.post("/issuecert", {
                         stu_name: this.certFormData.stu_name,
+                        stu_id: this.certFormData.stu_id,
                         certs: [
                             submitCertInfo
                         ]

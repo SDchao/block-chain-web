@@ -1,6 +1,7 @@
 <template>
     <div id="cert-modify">
         <el-form
+          v-if="!hasQueried"
           ref="queryForm"
           :model="queryFormData"
           :rules="queryFormRule">
@@ -11,20 +12,29 @@
                 <el-input placeholder="需要修改的证书编号" v-model="queryFormData.cert_id"></el-input>
             </el-form-item>
 
+            <el-form-item label="学生身份证" prop="stu_id" required>
+                <el-input placeholder="证书对应学生身份证" v-model="queryFormData.stu_id"></el-input>
+            </el-form-item>
+
             <el-form-item>
                 <el-button type="primary" @click="queryCert">确认</el-button>
             </el-form-item>
         </el-form>
-        <div id="modify">
+
+
+        <div id="modify" v-if="hasQueried">
 
             <el-form
               ref="certUpload"
-              v-if="nowCertData"
               :model="modifyFormData"
-              :rules="certFormRule">
+              :rules="modifyFormRule">
 
                 <el-form-item label="证书编号" prop="cert_id" required>
                     <el-input v-model="modifyFormData.cert_id"></el-input>
+                </el-form-item>
+
+                <el-form-item label="学生身份证" prop="stu_id" required>
+                    <el-input v-model="modifyFormData.stu_id"></el-input>
                 </el-form-item>
 
                 <el-form-item label="学生姓名" prop="stu_name" required>
@@ -61,11 +71,13 @@
 import FormRuleGenerator from "@/assets/FormRuleGenerator";
 
 const rawQueryForm = {
+    stu_id: "",
     cert_id: ""
 }
 
 const rawModifyForm = {
     cert_id: "",
+    stu_id: "",
     stu_name: "",
     school_name: "",
     degree: "",
@@ -77,11 +89,11 @@ export default {
     name: "CertModify",
     data() {
         return {
-            nowCertData: undefined,
+            hasQueried: false,
             queryFormData: rawQueryForm,
             queryFormRule: FormRuleGenerator.getRequiredRule(Object.keys(rawQueryForm)),
             modifyFormData: rawModifyForm,
-            certFormRule: FormRuleGenerator.getRequiredRule(Object.keys(rawModifyForm))
+            modifyFormRule: FormRuleGenerator.getRequiredRule(Object.keys(rawModifyForm))
         }
     },
     methods: {
@@ -96,8 +108,10 @@ export default {
                         .then((response) => {
                             loading.close()
                             if (response.data.msg === "SUCCESS") {
-                                this.modifyFormData = response.data.certs[0]
+                                Object.assign(this.modifyFormData, response.data.certs[0])
                                 this.modifyFormData.stu_name = response.data.stu_name
+                                this.modifyFormData.stu_id = this.queryFormData.stu_id  /// WIP
+                                this.hasQueried = true
                             } else {
                                 this.$message.error("无法查询到证书信息 " + response.data.msg)
                             }
@@ -108,40 +122,43 @@ export default {
                         })
                 }
             })
+        },
+        trySubmitForm() {
+            this.$refs.certUpload.validate((valid) => {
+                if (valid) {
+                    const loading = this.$loading({
+                        lock: true,
+                        text: "正在更新",
+                    })
+                    let submitCertInfo = Object.assign({}, this.modifyFormData)
+                    delete submitCertInfo.stu_name
+                    delete submitCertInfo.stu_id
+                    this.$axios.post("/modifycert", {
+                        stu_name: this.modifyFormData.stu_name,
+                        stu_id: this.modifyFormData.stu_id,
+                        certs: [
+                            submitCertInfo
+                        ]
+                    })
+                        .then((response) => {
+                            loading.close()
+                            if (response.data.msg === "SUCCESS") {
+                                this.$message("更新成功")
+                                this.queryFormData = rawQueryForm
+                                this.modifyFormData = rawModifyForm
+                                this.hasQueried = false
+                            } else {
+                                this.$message.error(response.data.msg)
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error.message)
+                            this.$message.error("无法上传 " + error.message)
+                            loading.close()
+                        })
+                }
+            })
         }
-    },
-    trySubmitForm() {
-        this.$refs.certUpload.validate((valid) => {
-            if (valid) {
-                const loading = this.$loading({
-                    lock: true,
-                    text: "正在更新",
-                })
-                let submitCertInfo = Object.assign({}, this.certFormData)
-                delete submitCertInfo.stu_name
-                this.$axios.post("/modifycert", {
-                    stu_name: this.certFormData.stu_name,
-                    certs: [
-                        submitCertInfo
-                    ]
-                })
-                    .then((response) => {
-                        loading.close()
-                        if (response.data.msg === "SUCCESS") {
-                            this.$message("更新成功")
-                            this.queryFormData = rawQueryForm
-                            this.modifyFormData = rawModifyForm
-                        } else {
-                            this.$message.error(response.data.msg)
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error.message)
-                        this.$message.error("无法上传 " + error.message)
-                        loading.close()
-                    })
-            }
-        })
     }
 }
 </script>
