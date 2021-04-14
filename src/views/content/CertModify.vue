@@ -90,9 +90,9 @@ export default {
     data() {
         return {
             hasQueried: false,
-            queryFormData: rawQueryForm,
+            queryFormData: Object.assign({}, rawQueryForm),
             queryFormRule: FormRuleGenerator.getRequiredRule(Object.keys(rawQueryForm)),
-            modifyFormData: rawModifyForm,
+            modifyFormData: Object.assign({}, rawModifyForm),
             modifyFormRule: FormRuleGenerator.getRequiredRule(Object.keys(rawModifyForm))
         }
     },
@@ -144,8 +144,8 @@ export default {
                             loading.close()
                             if (response.data.msg === "SUCCESS") {
                                 this.$message("更新成功")
-                                this.queryFormData = rawQueryForm
-                                this.modifyFormData = rawModifyForm
+                                this.queryFormData = Object.assign({}, rawQueryForm)
+                                this.modifyFormData = Object.assign({}, rawModifyForm)
                                 this.hasQueried = false
                             } else {
                                 this.$message.error(response.data.msg)

@@ -58,7 +58,7 @@ export default {
     name: "CertUpload",
     data() {
         return {
-            certFormData: rawForm,
+            certFormData: Object.assign({}, rawForm),
             certFormRule: FormRuleGenerator.getRequiredRule(Object.keys(rawForm))
         }
     },
@@ -85,7 +85,7 @@ export default {
                             loading.close()
                             if (response.data.msg === "SUCCESS") {
                                 this.$message("上传成功")
-                                this.certFormData = rawForm
+                                this.certFormData = Object.assign({}, rawForm)
                             } else {
                                 this.$message.error(response.data.msg)
                             }
