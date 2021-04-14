@@ -82,6 +82,8 @@ export default {
                                 let cert = res.data.certs[0]
                                 cert["stu_name"] = res.data.stu_name
                                 this.resultTableData = KeyNameTool.certDataToTable(cert)
+                            } else {
+                                this.$message.error(res.data.msg)
                             }
                         })
                         .catch((err) => {
