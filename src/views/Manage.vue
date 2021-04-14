@@ -95,20 +95,26 @@ export default {
         };
     },
     methods: {
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
+        handleSelect() {    // key, keyPath
+            checkSession()
         },
     },
     created() {
-        this.$axios.get("/verifyuser")
-            .then((res) => {
-                if (res.data.msg === "EXPIRED") {
-                    window.location.href = "/login"
-                }
-            })
-            .catch((err) => {
-                this.$message.error("无法访问数据 " + err.message)
-            })
+        document.title = "区块链管理中心"
+        checkSession()
+        setInterval(checkSession, 1 * 60 * 1000)
     }
 };
+
+function checkSession() {
+    this.$axios.get("/verifyuser")
+        .then((res) => {
+            if (res.data.msg === "EXPIRED") {
+                window.location.href = "/login"
+            }
+        })
+        .catch((err) => {
+            this.$message.error("无法访问数据 " + err.message)
+        })
+}
 </script>

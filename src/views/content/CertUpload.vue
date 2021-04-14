@@ -99,6 +99,9 @@ export default {
                 }
             })
         }
+    },
+    created() {
+        document.title = "证书上传"
     }
 }
 </script>

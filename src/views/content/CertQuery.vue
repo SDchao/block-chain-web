@@ -24,7 +24,7 @@
           :data="tableData"
           v-loading="tableLoading"
           element-loading-text="信息查询中"
-          cell-style="text-align: center"
+          :cell-style="{'text-align': 'center'}"
           style="width: 50%">
             <el-table-column
               prop="cert_id"
@@ -116,6 +116,9 @@ export default {
         onInspectCloseClicked() {
             this.inspectingData = undefined
         }
+    },
+    created() {
+        document.title = "证书查询"
     }
 }
 </script>

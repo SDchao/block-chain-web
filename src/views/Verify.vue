@@ -33,7 +33,7 @@
             <el-table
               :data="resultTableData"
               style="width: 30vw"
-              cell-style="text-align: center"
+              :cell-style="{'text-align': 'center'}"
               stripe>
                 <el-table-column
                   prop="name"></el-table-column>

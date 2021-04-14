@@ -159,6 +159,9 @@ export default {
                 }
             })
         }
+    },
+    created() {
+        document.title = "证书修改"
     }
 }
 </script>
