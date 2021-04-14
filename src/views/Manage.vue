@@ -107,7 +107,7 @@ export default {
 };
 
 function checkSession() {
-    this.$axios.get("/verifyuser")
+    window.axios.get("/verifyuser")
         .then((res) => {
             if (res.data.msg === "EXPIRED") {
                 window.location.href = "/login"
