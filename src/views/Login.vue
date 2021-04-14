@@ -102,6 +102,12 @@ export default {
     },
     created() {
         document.title = "用户登录"
+        this.$axios.get('/verifyuser')
+            .then((res) => {
+                if (res.data.msg === "SUCCESS") {
+                    window.location.href = '/manage'
+                }
+            })
     }
 };
 </script>
