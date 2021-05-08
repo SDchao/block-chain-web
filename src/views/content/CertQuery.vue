@@ -114,6 +114,12 @@ export default {
     },
     created() {
         document.title = "证书查询"
+        this.$axios.get("/verifyuser")
+            .then((response) => {
+                if (response.data.msg === "SUCCESS") {
+                    this.queryFormData.stu_id = response.data.id
+                }
+            })
     }
 }
 </script>

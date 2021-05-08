@@ -92,7 +92,7 @@ export default {
     data() {
         return {
             isCollapse: false,
-            level: 2
+            level: 0
         };
     },
     methods: {
