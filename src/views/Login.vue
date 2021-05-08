@@ -74,6 +74,7 @@ export default {
                 //     this.loginFormData.pri_key_sum = ""
                 //     return
                 // }
+
                 this.loginFormData.pri_key_sum = hex_md5(data)
             }
             reader.readAsText(event.target.files[0])

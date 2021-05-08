@@ -70,16 +70,8 @@ export default {
                         lock: true,
                         text: "正在上传",
                     })
-                    let submitCertInfo = Object.assign({}, this.certFormData)
-                    delete submitCertInfo.stu_name
-                    delete submitCertInfo.stu_id
-                    this.$axios.post("/issuecert", {
-                        stu_name: this.certFormData.stu_name,
-                        stu_id: this.certFormData.stu_id,
-                        certs: [
-                            submitCertInfo
-                        ]
-                    })
+
+                    this.$axios.post("/issuecert", this.certFormData)
                         .then((response) => {
                             console.log(response)
                             loading.close()

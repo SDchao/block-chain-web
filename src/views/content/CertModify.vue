@@ -108,9 +108,7 @@ export default {
                         .then((response) => {
                             loading.close()
                             if (response.data.msg === "SUCCESS") {
-                                Object.assign(this.modifyFormData, response.data.certs[0])
-                                this.modifyFormData.stu_name = response.data.stu_name
-                                this.modifyFormData.stu_id = this.queryFormData.stu_id  /// WIP
+                                Object.assign(this.modifyFormData, response.data)
                                 this.hasQueried = true
                             } else {
                                 this.$message.error("无法查询到证书信息 " + response.data.msg)
@@ -130,16 +128,7 @@ export default {
                         lock: true,
                         text: "正在更新",
                     })
-                    let submitCertInfo = Object.assign({}, this.modifyFormData)
-                    delete submitCertInfo.stu_name
-                    delete submitCertInfo.stu_id
-                    this.$axios.post("/modifycert", {
-                        stu_name: this.modifyFormData.stu_name,
-                        stu_id: this.modifyFormData.stu_id,
-                        certs: [
-                            submitCertInfo
-                        ]
-                    })
+                    this.$axios.post("/modifycert", this.modifyFormData)
                         .then((response) => {
                             loading.close()
                             if (response.data.msg === "SUCCESS") {

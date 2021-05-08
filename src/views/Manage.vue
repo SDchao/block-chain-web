@@ -15,8 +15,8 @@
                             </template>
                             <el-menu-item-group>
                                 <el-menu-item index="/manage/cert_query">证书查询</el-menu-item>
-                                <el-menu-item index="/manage/cert_upload">证书上传</el-menu-item>
-                                <el-menu-item index="/manage/cert_modify">证书修改</el-menu-item>
+                                <el-menu-item index="/manage/cert_upload" v-if="this.level > 0">证书上传</el-menu-item>
+                                <el-menu-item index="/manage/cert_modify" v-if="this.level > 0">证书修改</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
 
@@ -92,6 +92,7 @@ export default {
     data() {
         return {
             isCollapse: false,
+            level: 2
         };
     },
     methods: {
@@ -111,6 +112,10 @@ function checkSession() {
         .then((res) => {
             if (res.data.msg === "EXPIRED") {
                 window.location.href = "/login"
+            }
+
+            if (res.data.msg === "SUCCESS") {
+                this.level = res.data.level
             }
         })
         .catch((err) => {

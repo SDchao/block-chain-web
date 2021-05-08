@@ -93,11 +93,6 @@ export default {
                         .then((response) => {
                             this.tableLoading = false
                             if (response.data.msg === "SUCCESS") {
-
-                                // WIP
-                                for (let i in response.data.certs)
-                                    response.data.certs[i].stu_name = response.data.stu_name
-
                                 this.tableData = response.data.certs
                             } else {
                                 this.$message.error(response.data.msg)
