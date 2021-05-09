@@ -46,7 +46,7 @@
 <script>
 
 import FormRuleGenerator from "@/assets/FormRuleGenerator";
-import {hex_md5} from "@/assets/MD5";
+import Sha256 from "crypto-js/sha256"
 
 const rawLoginForm = {
     stu_id: "",
@@ -74,8 +74,8 @@ export default {
                 //     this.loginFormData.pri_key_sum = ""
                 //     return
                 // }
+                this.loginFormData.pri_key_sum = Sha256(data).toString()
 
-                this.loginFormData.pri_key_sum = hex_md5(data)
             }
             reader.readAsText(event.target.files[0])
         },
