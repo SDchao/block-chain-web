@@ -29,13 +29,13 @@
               :model="modifyFormData"
               :rules="modifyFormRule">
 
-                <el-form-item label="证书编号" prop="cert_id" required>
-                    <el-input v-model="modifyFormData.cert_id" :disabled="hasQueried"></el-input>
-                </el-form-item>
+                <!--                <el-form-item label="证书编号" prop="cert_id" required>-->
+                <!--                    <el-input v-model="modifyFormData.cert_id" :disabled="hasQueried"></el-input>-->
+                <!--                </el-form-item>-->
 
-                <el-form-item label="学生身份证" prop="stu_id" required>
-                    <el-input v-model="modifyFormData.stu_id" :disabled="hasQueried"></el-input>
-                </el-form-item>
+                <!--                <el-form-item label="学生身份证" prop="stu_id" required>-->
+                <!--                    <el-input v-model="modifyFormData.stu_id" :disabled="hasQueried"></el-input>-->
+                <!--                </el-form-item>-->
 
                 <el-form-item label="学生姓名" prop="stu_name" required>
                     <el-input v-model="modifyFormData.stu_name"></el-input>
