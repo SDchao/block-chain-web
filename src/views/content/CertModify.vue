@@ -30,11 +30,11 @@
               :rules="modifyFormRule">
 
                 <el-form-item label="证书编号" prop="cert_id" required>
-                    <el-input v-model="modifyFormData.cert_id"></el-input>
+                    <el-input v-model="modifyFormData.cert_id" :disabled="hasQueried"></el-input>
                 </el-form-item>
 
                 <el-form-item label="学生身份证" prop="stu_id" required>
-                    <el-input v-model="modifyFormData.stu_id"></el-input>
+                    <el-input v-model="modifyFormData.stu_id" :disabled="hasQueried"></el-input>
                 </el-form-item>
 
                 <el-form-item label="学生姓名" prop="stu_name" required>
@@ -108,7 +108,7 @@ export default {
                         .then((response) => {
                             loading.close()
                             if (response.data.msg === "SUCCESS") {
-                                Object.assign(this.modifyFormData, response.data)
+                                Object.assign(this.modifyFormData, response.data.certs[0])
                                 this.hasQueried = true
                             } else {
                                 this.$message.error("无法查询到证书信息 " + response.data.msg)
