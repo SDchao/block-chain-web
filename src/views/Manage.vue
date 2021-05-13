@@ -96,30 +96,29 @@ export default {
         };
     },
     methods: {
-        handleSelect() {    // key, keyPath
-            checkSession()
+        checkSession() {
+            window.axios.get("/verifyuser")
+                .then((res) => {
+                    if (res.data.msg === "EXPIRED") {
+                        window.location.href = "/login"
+                    }
+
+                    if (res.data.msg === "SUCCESS") {
+                        this.level = res.data.level
+                    }
+                })
+                .catch((err) => {
+                    this.$message.error("无法访问数据 " + err.message)
+                })
         },
+        handleSelect() {    // key, keyPath
+            this.checkSession()
+        }
     },
     created() {
         document.title = "区块链管理中心"
-        checkSession()
-        setInterval(checkSession, 1 * 60 * 1000)
+        this.checkSession()
+        setInterval(this.checkSession, 1 * 60 * 1000)
     }
-};
-
-function checkSession() {
-    window.axios.get("/verifyuser")
-        .then((res) => {
-            if (res.data.msg === "EXPIRED") {
-                window.location.href = "/login"
-            }
-
-            if (res.data.msg === "SUCCESS") {
-                this.level = res.data.level
-            }
-        })
-        .catch((err) => {
-            this.$message.error("无法访问数据 " + err.message)
-        })
 }
 </script>
