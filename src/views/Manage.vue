@@ -17,6 +17,7 @@
                                 <el-menu-item index="/manage/cert_query">证书查询</el-menu-item>
                                 <el-menu-item index="/manage/cert_upload" v-if="this.level > 0">证书上传</el-menu-item>
                                 <el-menu-item index="/manage/cert_modify" v-if="this.level > 0">证书修改</el-menu-item>
+                                <el-menu-item index="/manage/cert_history" v-if="this.level > 0">历史查询</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
 

@@ -8,6 +8,7 @@ import CertQuery from "@/views/content/CertQuery";
 import Verify from "@/views/Verify";
 import CertModify from "@/views/content/CertModify";
 import Logout from "@/views/Logout";
+import CertHistory from "@/views/content/CertHistory"
 
 Vue.use(VueRouter)
 
@@ -57,6 +58,11 @@ const routes = [
                 path: "cert_modify",
                 name: "CertModify",
                 component: CertModify
+            },
+            {
+                path: "cert_history",
+                name: "CertHistory",
+                component: CertHistory
             }
         ]
     }
