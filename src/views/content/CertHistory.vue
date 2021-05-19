@@ -53,18 +53,22 @@ export default {
         trySubmitForm() {
             this.$refs["queryForm"].validate((valid) => {
                 if (valid) {
+                    this.tableLoading = true
                     this.$axios.post("/history", this.queryFormData)
                         .then((res) => {
                             if (res.data.msg === "SUCCESS") {
+                                this.tableLoading = false
                                 this.tableData = res.data.history
                                 for (let data of this.tableData) {
                                     data["time"] = this.timestampToStr(data["timestamp"] * 1000)
                                 }
                             } else {
+                                this.tableLoading = false
                                 this.$message.error("无法查询历史记录" + res.data.msg)
                             }
                         })
                         .catch((err) => {
+                            this.tableLoading = false
                             this.$message.error("无法查询历史记录" + err.message)
                         })
                 }
