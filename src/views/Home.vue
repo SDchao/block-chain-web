@@ -7,12 +7,12 @@
         <button class="btn" @click="onClick">立即体验</button>
 
 
-        <el-carousel height="100vh" indicator-position="none" arrow="never">
+        <el-carousel
+          ref="carousel"
+          height="100vh" indicator-position="none" arrow="never"
+          :autoplay="false">
             <el-carousel-item>
-                <img src="@/assets/bg1.png" alt="" height="1080">
-            </el-carousel-item>
-            <el-carousel-item>
-                <img src="@/assets/bg2.png" alt="" height="1080">
+                <img src="@/assets/bg.png" alt="" height="1080">
             </el-carousel-item>
         </el-carousel>
     </div>
@@ -28,7 +28,13 @@ export default {
     methods: {
         onClick() {
             window.location.href = '/login'
+        },
+        rollNext() {
+            this.$refs["carousel"].next()
         }
+    },
+    mounted() {
+        setInterval(this.rollNext, 3000)
     }
 }
 </script>
@@ -54,6 +60,7 @@ export default {
     border-radius: 10px;
     cursor: pointer;
     outline: black;
+    padding: 8px;
 }
 
 .title {
