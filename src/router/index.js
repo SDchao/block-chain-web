@@ -9,15 +9,15 @@ import Verify from "@/views/Verify";
 import CertModify from "@/views/content/CertModify";
 import Logout from "@/views/Logout";
 import CertHistory from "@/views/content/CertHistory"
+import Home from "@/views/Home";
 
 Vue.use(VueRouter)
 
 const routes = [
     {
         path: '/',
-        // name: 'Home',
-        // component: Home
-        redirect: '/login'
+        name: 'Home',
+        component: Home
     },
     {
         path: '/login',
